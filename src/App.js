@@ -21,7 +21,7 @@ function App() {
       red: false,
     },
     time: {
-      clicked: true,
+      clicked: false,
       red: false,
     },
   });
