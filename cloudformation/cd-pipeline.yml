@@ -7,7 +7,7 @@ Description:
 Parameters: 
   EnvironmentName:
     Type: String
-    Default: env-name
+    Default: saskadetlata
     Description: "Environment prefixing resources, tagging resources and for importing resources from other stacks"
 
   GithubBranchName:
