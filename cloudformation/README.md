@@ -4,6 +4,8 @@
 
 - `hosting.yml` sets up an S3 bucket, adds permissions for an Origin Access Identity to read from that bucket (otherwise locked down) and a CloudFront distribution to use that OAI to serve content as well as redirect all traffic to HTTPS.
 
+- `auth.yml` sets up a Cognito User Pool and Cognito Identity Pool to manage authentication and authorisation.
+
 - `cd-pipeline.yml`
   sets up a CodePipeline, triggered by changes in a given branch and repo in GitHub. The code is passed to CodeBuild which runs the commands specified in `"../buildspec.yml"`, in essence performing unittesting and build operations. The build artefacts are then passes to CodeDeploy which deploys them to the S3 bucket configured in `hosting.yml`.
 
