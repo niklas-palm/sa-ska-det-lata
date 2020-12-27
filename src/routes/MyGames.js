@@ -1,15 +1,42 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 
 import Header from "../components/Header";
+import GamesListItem from "../components/GamesListItem";
+
+import { getMyGames } from "../utils/utils";
 
 import "../styling/myGames.scss";
 
 const MyGames = () => {
+  const [loading, setLoading] = useState(true);
+  const [myGames, setMyGames] = useState(null);
+
+  useEffect(() => {
+    const fetchMyGames = async () => {
+      const res = await getMyGames();
+      console.log(res);
+      setMyGames(res.data);
+      setLoading(false);
+    };
+    fetchMyGames();
+  }, []);
+
+  const renderMyGames = () => {
+    if (loading) {
+      return <div>loading</div>;
+    }
+
+    return myGames.map((game) => {
+      return <GamesListItem game={game} />;
+    });
+  };
+
   return (
     <div className="MyGamesContainer">
       <Header />
-      <div className="MyGamesContent">My Games</div>
+      <div className="MyGamesContent">
+        <div className="GamesListContainer">{renderMyGames()}</div>
+      </div>
     </div>
   );
 };

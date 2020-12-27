@@ -1,5 +1,8 @@
 // Some utils logic
 
+import axios from "axios";
+import { Auth } from "aws-amplify";
+
 export const validateInputs = (gameDetails, songs, songTemplate) => {
   if (gameDetails.name.length < 2 || gameDetails.name.length > 30) {
     return "Game name either too short or too long";
@@ -30,4 +33,48 @@ export const validateInputs = (gameDetails, songs, songTemplate) => {
   }
 
   return null;
+};
+
+export const postCreateGame = async (payload) => {
+  const userData = (await Auth.currentSession()).getIdToken();
+  const { jwtToken } = userData;
+  const userEmail = userData.payload.email;
+  let body = {
+    userEmail,
+    ...payload,
+  };
+
+  const res = await axios.post(
+    "https://0drkk6kc76.execute-api.eu-north-1.amazonaws.com/Prod/CreateGame",
+    body,
+    {
+      headers: {
+        Authorization: jwtToken,
+      },
+    }
+  );
+
+  return res;
+};
+
+export const getMyGames = async () => {
+  const userData = (await Auth.currentSession()).getIdToken();
+  const { jwtToken } = userData;
+  const userEmail = userData.payload.email;
+  console.log(userEmail);
+  let body = {
+    userEmail,
+  };
+
+  const res = await axios.post(
+    "https://0drkk6kc76.execute-api.eu-north-1.amazonaws.com/Prod/MyGames",
+    body,
+    {
+      headers: {
+        Authorization: jwtToken,
+      },
+    }
+  );
+
+  return res;
 };

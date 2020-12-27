@@ -12,5 +12,41 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+
+    .GamesListContainer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+
+      .GamesListItem {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid palevioletred;
+        border-radius: 0.5em;
+        margin: 1em;
+        max-width: 600px;
+        min-width: 250px;
+
+        &:hover {
+          cursor: pointer;
+        }
+
+        .GameTitle {
+          font-size: 1.3em;
+          font-weight: 400;
+          flex: 2;
+          margin: 0.2em;
+        }
+
+        .GameDescription {
+          font-size: 0.8em;
+          font-weight: 400;
+          margin: 0.5em;
+          flex: 5;
+          color: darkslategray;
+        }
+      }
+    }
   }
 }

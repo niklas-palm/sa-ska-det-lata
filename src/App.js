@@ -16,16 +16,14 @@ import Game from "./routes/Game";
 import CreateGame from "./routes/CreateGame";
 import MyGames from "./routes/MyGames";
 
-import Header from "./components/Header";
-
 import "./styling/app.scss";
 
 Amplify.configure(awsconfig);
 
-function App() {
+const App = () => {
   const [authState, setAuthState] = useState();
   const [user, setUser] = useState();
-  console.log(user);
+  // console.log(user);
 
   useEffect(() => {
     onAuthUIStateChange((nextAuthState, authData) => {
@@ -61,6 +59,6 @@ function App() {
       <AmplifySignIn slot="sign-in" usernameAlias="email" />
     </AmplifyAuthenticator>
   );
-}
+};
 
 export default App;

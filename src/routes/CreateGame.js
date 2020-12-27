@@ -7,7 +7,7 @@ import Switch from "@material-ui/core/Switch";
 import Header from "../components/Header";
 import CreateSongContainer from "../components/CreateSongContainer";
 
-import { validateInputs } from "../utils/utils";
+import { validateInputs, postCreateGame } from "../utils/utils";
 
 import "../styling/createGame.scss";
 
@@ -52,11 +52,12 @@ const CreateGame = () => {
     setSongs((prev) => ({ ...prev, [id]: null }));
   };
 
-  const saveGame = () => {
+  const saveGame = async () => {
     let error = validateInputs(gameDetails, songs, songTemplate);
     if (!error) {
       console.log(songs);
-      // saveGame() to dynamodb
+      let res = await postCreateGame({ gameDetails, songs });
+      console.log(res);
     } else {
       setErrorText(error);
     }
