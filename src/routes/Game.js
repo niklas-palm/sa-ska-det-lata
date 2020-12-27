@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import Header from "../components/Header";
+import Header from "../components/GameHeader";
 
 import "../styling/app.scss";
 

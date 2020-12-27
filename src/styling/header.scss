@@ -1,40 +1,9 @@
-.HeaderContainer {
-  width: 100%;
-  text-align: center;
+@import "./variables.scss";
+
+.MainHeaderContainer {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  // margin: 0 1em;
-
-  .ScoreTile {
-    margin: 1em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .ControlTile {
-      padding: 0.5em;
-
-      .ControlIcon {
-        font-size: 1.5em;
-      }
-
-      &:hover {
-        cursor: pointer;
-      }
-    }
-
-    .Score {
-      width: 50px;
-      height: 50px;
-      border-radius: 1em;
-      font-weight: 400;
-      font-size: 1.5em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  }
+  align-items: center;
+  justify-content: center;
 
   h2 {
     font-weight: 400;

@@ -13,7 +13,10 @@ import awsconfig from "./aws-exports";
 
 import Landing from "./routes/Landing";
 import Game from "./routes/Game";
-import CreateGame from "./routes/Game";
+import CreateGame from "./routes/CreateGame";
+import MyGames from "./routes/MyGames";
+
+import Header from "./components/Header";
 
 import "./styling/app.scss";
 
@@ -36,6 +39,9 @@ function App() {
       <Switch>
         <Route path="/CreateGame">
           <CreateGame />
+        </Route>
+        <Route path="/MyGames">
+          <MyGames />
         </Route>
         <Route path="/Game">
           <Game />

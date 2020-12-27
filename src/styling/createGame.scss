@@ -1,0 +1,47 @@
+@import "./variables.scss";
+
+.CreateGameContainer {
+  width: 100%;
+  height: 100vh;
+  background-color: $background-color;
+
+  .CreateGameContent {
+    background-color: $background-color;
+    padding-bottom: 4em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    .TextInput {
+      width: 80%;
+      margin-top: 0.2em;
+
+      @media screen and (min-width: $desktop-width) {
+        width: 50%;
+      }
+    }
+
+    .CreateSongContainer {
+      text-align: center;
+      margin: 1em 0;
+      padding: 0.5em;
+      padding-bottom: 1em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 85%;
+
+      border: 1px solid palevioletred;
+      border-radius: 0.5em;
+
+      @media screen and (min-width: $desktop-width) {
+        width: 50%;
+      }
+
+      .TextInput {
+        width: 95%;
+      }
+    }
+  }
+}
