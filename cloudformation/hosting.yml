@@ -52,8 +52,8 @@ Resources:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
-        # Aliases:
-        #   - CNAME you own
+        Aliases:
+          - saskadetlata.enpalm.se
         DefaultCacheBehavior: 
           AllowedMethods: # Which methods to forward to S3
             - GET
@@ -84,10 +84,9 @@ Resources:
               OriginAccessIdentity: !Sub origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}
         IPV6Enabled: false
         ViewerCertificate: 
-          CloudFrontDefaultCertificate: true
-          # AcmCertificateArn: arn:aws:acm:us-east-1:accountID:certificate/xxxxx
-          # MinimumProtocolVersion: TLSv1
-          # SslSupportMethod: sni-only
+          AcmCertificateArn: arn:aws:acm:us-east-1:641758013508:certificate/c39e3808-3fbb-4457-80c2-f59039fbfc20
+          MinimumProtocolVersion: TLSv1
+          SslSupportMethod: sni-only
       Tags:
         - Key: project
           Value: !Sub ${EnvironmentName}
