@@ -19,6 +19,10 @@ export const validateInputs = (gameDetails, songs, songTemplate) => {
       let song = Object.keys(songs)[songIndex];
       let key = Object.keys(songTemplate)[templateIndex];
 
+      if (!(songs[song].lyrics.split(" ").length == 5)) {
+        return `Lyrics has to be 5 words in song number ${song}`;
+      }
+
       if (!songs[song]) {
         continue;
       }
