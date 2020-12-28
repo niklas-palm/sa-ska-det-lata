@@ -1,0 +1,11 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "sa-ska-det-lata-backend"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-12ftuvw5dbt8h"
+s3_prefix = "sa-ska-det-lata-backend"
+region = "eu-north-1"
+confirm_changeset = false
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "EnvironmentName=\"saskadetlata\""

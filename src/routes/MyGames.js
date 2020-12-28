@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import Header from "../components/Header";
 import GamesListItem from "../components/GamesListItem";
@@ -23,11 +24,11 @@ const MyGames = () => {
 
   const renderMyGames = () => {
     if (loading) {
-      return <div>loading</div>;
+      return <CircularProgress />;
     }
 
     return myGames.map((game) => {
-      return <GamesListItem game={game} />;
+      return <GamesListItem key={game.gameName} game={game} />;
     });
   };
 

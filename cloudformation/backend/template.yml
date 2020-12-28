@@ -1,0 +1,145 @@
+
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  backend
+
+Transform:
+- AWS::Serverless-2016-10-31
+
+Parameters: 
+  EnvironmentName:
+    Type: String
+    Default: saskadetlata
+    Description: "Environment prefixing resources, tagging resources and for importing resources from other stacks"
+
+
+Resources:
+  getMyGamesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/get-my-games.getMyGamesHandler
+      Runtime: nodejs12.x
+      Policies:
+        # Give Create/Read/Update/Delete Permissions to the SampleTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref GamesTable
+      Environment:
+        Variables:
+          # Make table name accessible as environment variable from function code during execution
+          GAMES_TABLE: !Ref GamesTable
+      Events:
+        QueryEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /MyGames
+            Method: POST
+
+  # # Each Lambda function is defined by properties:
+  # # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+
+  # # This is a Lambda function config associated with the source code: get-by-id.js
+  # getByIdFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: src/handlers/get-by-id.getByIdHandler
+  #     Runtime: nodejs12.x
+  #     MemorySize: 128
+  #     Timeout: 100
+  #     Description: A simple example includes a HTTP get method to get one item by id from a DynamoDB table.
+  #     Policies:
+  #       # Give Create/Read/Update/Delete Permissions to the SampleTable
+  #       - DynamoDBCrudPolicy:
+  #           TableName: !Ref SampleTable
+  #     Environment:
+  #       Variables:
+  #         # Make table name accessible as environment variable from function code during execution
+  #         SAMPLE_TABLE: !Ref SampleTable
+  #     Events:
+  #       Api:
+  #         Type: Api
+  #         Properties:
+  #           Path: /{id}
+  #           Method: GET
+  # # Each Lambda function is defined by properties:
+  # # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+
+
+  MyApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Cors: 
+        AllowMethods: "'*'"
+        AllowHeaders: "'*'"
+        AllowOrigin: "'*'"
+      Auth:
+        DefaultAuthorizer: MyCognitoAuthorizer
+        AddDefaultAuthorizerToCorsPreflight: False
+        Authorizers:
+          MyCognitoAuthorizer:
+            UserPoolArn: 
+              Fn::ImportValue: 
+                !Sub "${EnvironmentName}::UserPool::ARN"
+
+  # This is a Lambda function config associated with the source code: put-item.js
+  putItemFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/put-item.putItemHandler
+      Runtime: nodejs12.x
+      # MemorySize: 128
+      Timeout: 100
+      # Description: A simple example includes a HTTP post method to add one item to a DynamoDB table.
+      Policies:
+        # Give Create/Read/Update/Delete Permissions to the SampleTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref GamesTable
+      Environment:
+        Variables:
+          # Make table name accessible as environment variable from function code during execution
+          GAMES_TABLE: !Ref GamesTable
+      Events:
+        PostEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /CreateGame
+            Method: POST
+
+
+  # Simple syntax to create a DynamoDB table with a single attribute primary key, more in
+  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlesssimpletable
+
+  GamesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions: 
+        - 
+          AttributeName: UserID
+          AttributeType: S
+        - 
+          AttributeName: sk
+          AttributeType: S
+      KeySchema:
+        - AttributeName: UserID
+          KeyType: HASH
+        - AttributeName: sk
+          KeyType: RANGE
+
+Outputs:
+  CreateGameEndpoint:
+    Description: "API Gateway endpoint URL for Prod stage"
+    Value: !Sub "https://${MyApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/CreateGame"
+  GetMyGamesEndpoint:
+    Description: "API Gateway endpoint URL for Prod stage"
+    Value: !Sub "https://${MyApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/MyGames"
+
+  putItemFunction:
+    Description: "putItemFunction Lambda"
+    Value: !Ref putItemFunction
+
+  getMyGamesFunction:
+    Description: "putItemFunction Lambda"
+    Value: !Ref getMyGamesFunction

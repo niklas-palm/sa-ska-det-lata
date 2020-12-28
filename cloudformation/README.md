@@ -9,6 +9,8 @@
 - `cd-pipeline.yml`
   sets up a CodePipeline, triggered by changes in a given branch and repo in GitHub. The code is passed to CodeBuild which runs the commands specified in `"../buildspec.yml"`, in essence performing unittesting and build operations. The build artefacts are then passes to CodeDeploy which deploys them to the S3 bucket configured in `hosting.yml`.
 
+- `/backend` Contains an AWS SAM application specifying the backend for the application.
+
 - `template-pipeline-parameters.json` is a template file containing the parameters that need to be passed to AWS when deploying the `cd-pipeline-yml` stack above.
 
 ## Deployment instructions

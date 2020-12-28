@@ -5,3 +5,5 @@ build/
 secret*
 
 aws-exports.js
+
+.aws-sam/
