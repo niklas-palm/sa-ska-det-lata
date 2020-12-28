@@ -28,7 +28,7 @@ const MyGames = () => {
     }
 
     return myGames.map((game) => {
-      return <GamesListItem key={game.gameName} game={game} />;
+      return <GamesListItem key={game.sk} game={game} />;
     });
   };
 
