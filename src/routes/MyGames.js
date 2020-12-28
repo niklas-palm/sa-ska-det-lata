@@ -27,6 +27,10 @@ const MyGames = () => {
       return <CircularProgress />;
     }
 
+    if (!myGames.length > 0) {
+      return <p> You haven't created any games</p>;
+    }
+
     return myGames.map((game) => {
       return <GamesListItem key={game.sk} game={game} />;
     });
