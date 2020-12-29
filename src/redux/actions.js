@@ -4,6 +4,7 @@ import {
   SET_SCORE,
   INCREMENT_SONG_INDEX,
   DECREMENT_SONG_INDEX,
+  REVEAL_ARTIST,
 } from "./actionTypes";
 
 export const setGame = (game) => ({
@@ -29,4 +30,8 @@ export const incrementSongIndex = () => ({
 
 export const decrementSongIndex = () => ({
   type: DECREMENT_SONG_INDEX,
+});
+
+export const revealArtist = () => ({
+  type: REVEAL_ARTIST,
 });

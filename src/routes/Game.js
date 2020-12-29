@@ -12,6 +12,7 @@ import {
   wordClick,
   incrementSongIndex,
   decrementSongIndex,
+  revealArtist,
 } from "../redux/actions";
 
 import "../styling/app.scss";
@@ -21,7 +22,7 @@ const Game = () => {
   const history = useHistory();
   const game = useSelector((state) => state.gameReducer);
   const [showModal, setShowModal] = useState(false);
-  const [revealArtist, setRevealArtist] = useState(false);
+  // const [revealArtist, setRevealArtist] = useState(false);
 
   useEffect(() => {
     if (!activeGame()) {
@@ -56,11 +57,6 @@ const Game = () => {
     );
   };
 
-  const onNextSongClick = () => {
-    setRevealArtist(false);
-    dispatch(incrementSongIndex());
-  };
-
   const renderNextOrFinshedButton = () => {
     if (game.currentSongIndex === game.songList.length - 1) {
       return <p>FINISHED!</p>;
@@ -73,7 +69,10 @@ const Game = () => {
           >
             <ArrowBackIcon fontSize="large" />
           </div>
-          <div onClick={() => onNextSongClick()} className="GameFooterIcon">
+          <div
+            onClick={() => dispatch(incrementSongIndex())}
+            className="GameFooterIcon"
+          >
             <ArrowForwardIcon fontSize="large" />
           </div>
         </div>
@@ -96,14 +95,12 @@ const Game = () => {
           >
             Show Question
           </Button>
-          {/* <h3>Question:</h3>
-          <p>{game.songList[game.currentSongIndex].question}</p> */}
         </div>
         <div
           style={{ alignItems: "flex-start" }}
           className="QuestionsContainerItem"
         >
-          {revealArtist ? (
+          {game.songList[game.currentSongIndex].revealArtist ? (
             <div>
               <h4 style={{ marginBottom: "0", fontWeight: "600" }}>
                 {game.songList[game.currentSongIndex].artist}
@@ -114,7 +111,8 @@ const Game = () => {
             </div>
           ) : (
             <Button
-              onClick={() => setRevealArtist(true)}
+              // onClick={() => setRevealArtist(true)}
+              onClick={() => dispatch(revealArtist())}
               variant="contained"
               color="primary"
               style={{ backgroundColor: "forestgreen" }}

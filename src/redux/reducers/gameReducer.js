@@ -4,6 +4,7 @@ import {
   SET_SCORE,
   INCREMENT_SONG_INDEX,
   DECREMENT_SONG_INDEX,
+  REVEAL_ARTIST,
 } from "../actionTypes";
 
 const initialState = {
@@ -52,15 +53,31 @@ const gameReducer = (state = initialState, action) => {
       };
 
     case INCREMENT_SONG_INDEX:
+      if (state.currentSongIndex < state.songList.length - 1) {
+        return {
+          ...state,
+          currentSongIndex: state.currentSongIndex + 1,
+        };
+      }
       return {
         ...state,
-        currentSongIndex: state.currentSongIndex + 1,
       };
 
     case DECREMENT_SONG_INDEX:
+      if (state.currentSongIndex > 0) {
+        return {
+          ...state,
+          currentSongIndex: state.currentSongIndex - 1,
+        };
+      }
       return {
         ...state,
-        currentSongIndex: state.currentSongIndex - 1,
+      };
+
+    case REVEAL_ARTIST:
+      state.songList[state.currentSongIndex].revealArtist = true;
+      return {
+        ...state,
       };
 
     default:
@@ -87,7 +104,14 @@ const genSongObjectList = (songList) => {
       return { [word]: lyricsInfo };
     });
 
-    return { artist, songName, question, answer, lyricsList };
+    return {
+      artist,
+      songName,
+      question,
+      answer,
+      lyricsList,
+      revealArtist: false,
+    };
   });
 };
 
