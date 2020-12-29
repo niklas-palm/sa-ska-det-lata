@@ -1,60 +1,77 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+
+import Button from "@material-ui/core/Button";
 
 import Header from "../components/GameHeader";
+import { wordClick, incrementSongIndex } from "../redux/actions";
 
 import "../styling/app.scss";
 
 const Game = () => {
-  const [song, setSong] = useState({
-    "it's": {
-      clicked: false,
-      red: false,
-    },
-    the: {
-      clicked: false,
-      red: true,
-    },
-    most: {
-      clicked: false,
-      red: false,
-    },
-    wonderful: {
-      clicked: false,
-      red: false,
-    },
-    time: {
-      clicked: false,
-      red: false,
-    },
-  });
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const game = useSelector((state) => state.gameReducer);
 
-  const renderGameTiles = () => {
-    return Object.keys(song).map((word, index) => {
-      return (
-        <div
-          onClick={() => onClick(word)}
-          key={word}
-          className="GameTile"
-          style={{
-            backgroundColor:
-              song[word].clicked && song[word].red ? "red" : "#1ca9f0",
-          }}
-        >
-          {song[word].clicked ? word : index + 1}
-        </div>
-      );
-    });
+  useEffect(() => {
+    if (!activeGame()) {
+      history.push("/");
+    }
+  }, [history]);
+
+  const activeGame = () => {
+    return !!game.gameName;
   };
 
-  const onClick = (word) => {
-    console.log(word);
-    setSong((prev) => ({
-      ...prev,
-      [word]: {
-        ...song[word],
-        clicked: !song[word].clicked,
-      },
-    }));
+  const renderGameTiles = () => {
+    return game.songList[game.currentSongIndex].lyricsList.map(
+      (wordObject, index) => {
+        let word = Object.keys(wordObject)[0];
+        return (
+          <div
+            onClick={() => dispatch(wordClick(word, index))}
+            key={index}
+            className="GameTile"
+            style={{
+              backgroundColor:
+                wordObject[word].clicked && wordObject[word].red
+                  ? "red"
+                  : "#1ca9f0",
+            }}
+          >
+            {wordObject[word].clicked ? word : index + 1}
+          </div>
+        );
+      }
+    );
+  };
+
+  const renderNextOrFinshedButton = () => {
+    if (game.currentSongIndex === game.songList.length - 1) {
+      return <p>FINISHED!</p>;
+    } else {
+      return (
+        <Button
+          onClick={() => dispatch(incrementSongIndex())}
+          variant="contained"
+          color="primary"
+        >
+          next song
+        </Button>
+      );
+    }
+  };
+
+  const renderQuestion = () => {
+    return (
+      <div>
+        <h3>Question:</h3>
+        <p>{game.songList[game.currentSongIndex].question}</p>
+        <h3>Answer:</h3>
+        <p>{game.songList[game.currentSongIndex].answer}</p>
+      </div>
+    );
   };
 
   return (
@@ -62,8 +79,13 @@ const Game = () => {
       <div className="GameWrapper">
         <Header />
         <div className="GameContainer">
-          <div className="TilesContainer">{renderGameTiles()}</div>
+          <div className="TilesContainer">
+            {activeGame() && renderGameTiles()}
+          </div>
         </div>
+        <div>Current song index: {game.currentSongIndex}</div>
+        {activeGame() && renderQuestion()}
+        {activeGame() && renderNextOrFinshedButton()}
       </div>
     </div>
   );

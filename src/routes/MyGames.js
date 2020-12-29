@@ -15,7 +15,6 @@ const MyGames = () => {
   useEffect(() => {
     const fetchMyGames = async () => {
       const res = await getMyGames();
-      console.log(res);
       setMyGames(res.data);
       setLoading(false);
     };

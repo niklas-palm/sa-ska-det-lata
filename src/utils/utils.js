@@ -46,10 +46,15 @@ export const validateInputs = (gameDetails, songs, songTemplate) => {
   return null;
 };
 
+const getUserData = async () => {
+  return (await Auth.currentSession()).getIdToken();
+};
+
 export const postCreateGame = async (payload) => {
-  const userData = (await Auth.currentSession()).getIdToken();
+  const userData = await getUserData();
   const { jwtToken } = userData;
   const userEmail = userData.payload.email;
+
   let body = {
     userEmail,
     ...payload,
@@ -69,10 +74,10 @@ export const postCreateGame = async (payload) => {
 };
 
 export const getMyGames = async () => {
-  const userData = (await Auth.currentSession()).getIdToken();
+  const userData = await getUserData();
   const { jwtToken } = userData;
   const userEmail = userData.payload.email;
-  console.log(userEmail);
+
   let body = {
     userEmail,
   };

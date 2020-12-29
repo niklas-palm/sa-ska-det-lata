@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { Add, Remove } from "@material-ui/icons";
+import { useSelector, useDispatch } from "react-redux";
+import { setScore } from "../redux/actions";
 
 import "../styling/gameHeader.scss";
 
 const Header = () => {
-  const [score, setScore] = useState({ green: 0, red: 0 });
+  const score = useSelector((state) => state.gameReducer.score);
+  const dispatch = useDispatch();
 
   return (
     <div className="HeaderContainer">
@@ -12,7 +15,7 @@ const Header = () => {
         <div
           className="ControlTile"
           onClick={() =>
-            setScore((prev) => ({ ...prev, green: prev.green - 1 }))
+            dispatch(setScore({ ...score, green: score.green - 1 }))
           }
         >
           <Remove className="ControlIcon" />
@@ -23,7 +26,7 @@ const Header = () => {
         <div
           className="ControlTile"
           onClick={() =>
-            setScore((prev) => ({ ...prev, green: prev.green + 1 }))
+            dispatch(setScore({ ...score, green: score.green + 1 }))
           }
         >
           <Add className="ControlIcon" />
@@ -33,7 +36,7 @@ const Header = () => {
       <div className="ScoreTile">
         <div
           className="ControlTile"
-          onClick={() => setScore((prev) => ({ ...prev, red: prev.red - 1 }))}
+          onClick={() => dispatch(setScore({ ...score, red: score.red - 1 }))}
         >
           <Remove className="ControlIcon" />
         </div>
@@ -42,7 +45,7 @@ const Header = () => {
         </div>
         <div
           className="ControlTile"
-          onClick={() => setScore((prev) => ({ ...prev, red: prev.red + 1 }))}
+          onClick={() => dispatch(setScore({ ...score, red: score.red + 1 }))}
         >
           <Add className="ControlIcon" />
         </div>
