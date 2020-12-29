@@ -4,10 +4,16 @@ import axios from "axios";
 import { Auth } from "aws-amplify";
 
 export const validateInputs = (gameDetails, songs, songTemplate) => {
-  if (gameDetails.name.length < 2 || gameDetails.name.length > 30) {
+  if (
+    gameDetails.name.trim().length < 2 ||
+    gameDetails.name.trim().length > 30
+  ) {
     return "Game name either too short or too long";
-  } else if (!gameDetails.description || gameDetails.description.length > 100) {
-    return "Game details either too short or too long";
+  } else if (
+    !gameDetails.description.trim() ||
+    gameDetails.description.trim().length > 100
+  ) {
+    return "Game description either too short or too long";
   }
 
   for (let songIndex = 0; songIndex < Object.keys(songs).length; songIndex++) {
@@ -24,13 +30,14 @@ export const validateInputs = (gameDetails, songs, songTemplate) => {
       }
 
       if (!songs[song]) {
+        // Deleted song
         continue;
       }
 
-      if (!(songs[song][key].length > 0)) {
+      if (!(songs[song][key].trim().length > 0)) {
         return `${key} cannot be empty in song number ${song}`;
       }
-      if (!(songs[song][key].length < 50)) {
+      if (!(songs[song][key].trim().length < 50)) {
         return `${key} is too long in song number ${song}`;
       }
     }
