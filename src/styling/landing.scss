@@ -6,10 +6,26 @@
   background-color: $background-color;
 
   .LandingContent {
+    margin-top: 1em;
     background-color: $background-color;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+
+    .LandingButton {
+      border: 1px solid green;
+      border-radius: 1em;
+      background-color: lightskyblue;
+      text-align: center;
+      min-width: 180px;
+      padding: 1em;
+      margin: 0.5em 0;
+      box-shadow: 0px 1px 3px 0px black;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
   }
 }
