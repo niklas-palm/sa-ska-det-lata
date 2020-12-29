@@ -1,11 +1,20 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
+import CloseIcon from "@material-ui/icons/Close";
 
 const CreateSongContainer = ({ song, songs, updateSongs, deleteSong }) => {
   return (
     <div key={song} className="CreateSongContainer">
-      Song {song}
+      <div className="CreateSongContainerHeader">
+        <p>Song {song}</p>
+        <div
+          className="CreateSongContainerDelete"
+          onClick={() => deleteSong(song)}
+        >
+          <CloseIcon />
+        </div>
+      </div>
+
       <TextField
         value={songs[song].artist}
         onChange={(e) => updateSongs(song, "artist", e.target.value)}
@@ -36,14 +45,6 @@ const CreateSongContainer = ({ song, songs, updateSongs, deleteSong }) => {
         className="TextInput"
         label="Answer"
       />
-      <Button
-        style={{ marginTop: "2em" }}
-        onClick={() => deleteSong(song)}
-        variant="contained"
-        color="secondary"
-      >
-        Remove song
-      </Button>
     </div>
   );
 };

@@ -34,6 +34,25 @@
       border: 1px solid palevioletred;
       border-radius: 0.5em;
 
+      .CreateSongContainerHeader {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: center;
+
+        .CreateSongContainerDelete {
+          padding: 1em;
+          position: absolute;
+          top: 0;
+          right: 0;
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+
       @media screen and (min-width: $desktop-width) {
         width: 50%;
       }
