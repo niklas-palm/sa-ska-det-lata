@@ -119,26 +119,32 @@ const CreateGame = () => {
 
         {renderSongInput()}
 
-        <Button onClick={() => addSong()} variant="contained" color="primary">
-          Add song
-        </Button>
-
         {loading ? (
-          <CircularProgress style={{ marginTop: "4em" }} />
+          <CircularProgress />
         ) : (
-          <Button
-            style={{ marginTop: "4em" }}
-            onClick={() => saveGame()}
-            variant="contained"
-            color="primary"
-          >
-            Save Game
-          </Button>
+          <div className="CreateGameFooter">
+            <Button
+              onClick={() => addSong()}
+              variant="contained"
+              color="primary"
+              style={{ backgroundColor: "royalblue" }}
+            >
+              Add song
+            </Button>
+
+            <Button
+              onClick={() => saveGame()}
+              variant="contained"
+              color="primary"
+              style={{ backgroundColor: "forestgreen" }}
+            >
+              Save Game
+            </Button>
+          </div>
         )}
 
         <p style={{ color: "red" }}>{errorText}</p>
       </div>
-      {/* <Link to="/Header">Home</Link> */}
     </div>
   );
 };

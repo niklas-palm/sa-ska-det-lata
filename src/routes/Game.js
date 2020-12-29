@@ -1,11 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import Button from "@material-ui/core/Button";
 
 import Header from "../components/GameHeader";
-import { wordClick, incrementSongIndex } from "../redux/actions";
+import Modal from "../components/Modal";
+import {
+  wordClick,
+  incrementSongIndex,
+  decrementSongIndex,
+} from "../redux/actions";
 
 import "../styling/app.scss";
 
@@ -13,6 +20,8 @@ const Game = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const game = useSelector((state) => state.gameReducer);
+  const [showModal, setShowModal] = useState(false);
+  const [revealArtist, setRevealArtist] = useState(false);
 
   useEffect(() => {
     if (!activeGame()) {
@@ -47,29 +56,73 @@ const Game = () => {
     );
   };
 
+  const onNextSongClick = () => {
+    setRevealArtist(false);
+    dispatch(incrementSongIndex());
+  };
+
   const renderNextOrFinshedButton = () => {
     if (game.currentSongIndex === game.songList.length - 1) {
       return <p>FINISHED!</p>;
     } else {
       return (
-        <Button
-          onClick={() => dispatch(incrementSongIndex())}
-          variant="contained"
-          color="primary"
-        >
-          next song
-        </Button>
+        <div className="GameFooter">
+          <div
+            onClick={() => dispatch(decrementSongIndex())}
+            className="GameFooterIcon"
+          >
+            <ArrowBackIcon fontSize="large" />
+          </div>
+          <div onClick={() => onNextSongClick()} className="GameFooterIcon">
+            <ArrowForwardIcon fontSize="large" />
+          </div>
+        </div>
       );
     }
   };
 
   const renderQuestion = () => {
     return (
-      <div>
-        <h3>Question:</h3>
-        <p>{game.songList[game.currentSongIndex].question}</p>
-        <h3>Answer:</h3>
-        <p>{game.songList[game.currentSongIndex].answer}</p>
+      <div className="QuestionContainer">
+        <div
+          style={{ alignItems: "flex-end" }}
+          className="QuestionsContainerItem"
+        >
+          <Button
+            onClick={() => setShowModal(true)}
+            variant="contained"
+            color="primary"
+            style={{ backgroundColor: "#EC7E1D" }}
+          >
+            Show Question
+          </Button>
+          {/* <h3>Question:</h3>
+          <p>{game.songList[game.currentSongIndex].question}</p> */}
+        </div>
+        <div
+          style={{ alignItems: "flex-start" }}
+          className="QuestionsContainerItem"
+        >
+          {revealArtist ? (
+            <div>
+              <h4 style={{ marginBottom: "0", fontWeight: "600" }}>
+                {game.songList[game.currentSongIndex].artist}
+              </h4>
+              <p style={{ marginTop: "0.2em" }}>
+                {game.songList[game.currentSongIndex].songName}
+              </p>{" "}
+            </div>
+          ) : (
+            <Button
+              onClick={() => setRevealArtist(true)}
+              variant="contained"
+              color="primary"
+              style={{ backgroundColor: "forestgreen" }}
+            >
+              Reveal artist
+            </Button>
+          )}
+        </div>
       </div>
     );
   };
@@ -83,10 +136,15 @@ const Game = () => {
             {activeGame() && renderGameTiles()}
           </div>
         </div>
-        <div>Current song index: {game.currentSongIndex}</div>
         {activeGame() && renderQuestion()}
         {activeGame() && renderNextOrFinshedButton()}
       </div>
+      {showModal && (
+        <Modal
+          setShowModal={setShowModal}
+          song={game.songList[game.currentSongIndex]}
+        />
+      )}
     </div>
   );
 };

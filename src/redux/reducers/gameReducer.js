@@ -3,6 +3,7 @@ import {
   WORD_CLICK,
   SET_SCORE,
   INCREMENT_SONG_INDEX,
+  DECREMENT_SONG_INDEX,
 } from "../actionTypes";
 
 const initialState = {
@@ -54,6 +55,12 @@ const gameReducer = (state = initialState, action) => {
       return {
         ...state,
         currentSongIndex: state.currentSongIndex + 1,
+      };
+
+    case DECREMENT_SONG_INDEX:
+      return {
+        ...state,
+        currentSongIndex: state.currentSongIndex - 1,
       };
 
     default:

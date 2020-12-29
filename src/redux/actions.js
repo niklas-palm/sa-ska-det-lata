@@ -3,6 +3,7 @@ import {
   WORD_CLICK,
   SET_SCORE,
   INCREMENT_SONG_INDEX,
+  DECREMENT_SONG_INDEX,
 } from "./actionTypes";
 
 export const setGame = (game) => ({
@@ -24,4 +25,8 @@ export const setScore = (score) => ({
 
 export const incrementSongIndex = () => ({
   type: INCREMENT_SONG_INDEX,
+});
+
+export const decrementSongIndex = () => ({
+  type: DECREMENT_SONG_INDEX,
 });

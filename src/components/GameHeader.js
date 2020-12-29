@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Add, Remove } from "@material-ui/icons";
 import { useSelector, useDispatch } from "react-redux";
 import { setScore } from "../redux/actions";
@@ -6,7 +6,7 @@ import { setScore } from "../redux/actions";
 import "../styling/gameHeader.scss";
 
 const Header = () => {
-  const score = useSelector((state) => state.gameReducer.score);
+  const { score, currentSongIndex } = useSelector((state) => state.gameReducer);
   const dispatch = useDispatch();
 
   return (
@@ -32,7 +32,7 @@ const Header = () => {
           <Add className="ControlIcon" />
         </div>
       </div>
-      <h2>Så ska det låta!</h2>
+      <h2>Song #{currentSongIndex + 1}</h2>
       <div className="ScoreTile">
         <div
           className="ControlTile"
