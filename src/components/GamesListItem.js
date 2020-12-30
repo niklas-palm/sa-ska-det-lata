@@ -1,21 +1,16 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { setGame } from "../redux/actions";
 
 const GamesListItem = ({ game }) => {
   const history = useHistory();
-  const currentGame = useSelector((state) => state.gameReducer);
   const dispatch = useDispatch();
 
   const handleClick = () => {
-    if (currentGame.gameName === game.gameName) {
-      history.push("/Game");
-    } else {
-      dispatch(setGame(game));
-      history.push("/Game");
-    }
+    dispatch(setGame(game));
+    history.push("/Game");
   };
 
   return (

@@ -94,3 +94,24 @@ export const getMyGames = async () => {
 
   return res;
 };
+
+// Cache utils
+
+const cacheName = "ssdl";
+
+export const getCache = () => {
+  let cache = window.localStorage.getItem(cacheName);
+  if (cache) {
+    return JSON.parse(cache);
+  }
+  return null;
+};
+
+export const writeToCache = (obj) => {
+  window.localStorage.setItem(cacheName, JSON.stringify(obj));
+  return;
+};
+
+export const clearCache = () => {
+  window.localStorage.removeItem(cacheName);
+};

@@ -1,10 +1,12 @@
 import {
   SET_GAME,
+  FINISH_GAME,
   WORD_CLICK,
   SET_SCORE,
   INCREMENT_SONG_INDEX,
   DECREMENT_SONG_INDEX,
   REVEAL_ARTIST,
+  LOAD_OLD_GAME,
 } from "./actionTypes";
 
 export const setGame = (game) => ({
@@ -12,6 +14,10 @@ export const setGame = (game) => ({
   payload: {
     game,
   },
+});
+
+export const finishGame = () => ({
+  type: FINISH_GAME,
 });
 
 export const wordClick = (word, index) => ({
@@ -34,4 +40,9 @@ export const decrementSongIndex = () => ({
 
 export const revealArtist = () => ({
   type: REVEAL_ARTIST,
+});
+
+export const loadOldGame = (prevGame) => ({
+  type: LOAD_OLD_GAME,
+  payload: prevGame,
 });

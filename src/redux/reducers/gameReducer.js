@@ -5,7 +5,11 @@ import {
   INCREMENT_SONG_INDEX,
   DECREMENT_SONG_INDEX,
   REVEAL_ARTIST,
+  LOAD_OLD_GAME,
+  FINISH_GAME,
 } from "../actionTypes";
+
+import { writeToCache, clearCache } from "../../utils/utils";
 
 const initialState = {
   score: {
@@ -24,13 +28,24 @@ const gameReducer = (state = initialState, action) => {
       const { game } = action.payload;
       const songList = genSongObjectList(game.songList);
 
-      return {
+      if (!state.score) {
+        state.score = initialState.score;
+      }
+      let newState = {
         ...state,
         gameDescription: game.gameDescription,
         gameName: game.gameName,
         currentSongIndex: 0,
         songList,
       };
+
+      writeToCache(newState);
+
+      return newState;
+
+    case FINISH_GAME:
+      clearCache();
+      return initialState;
 
     case WORD_CLICK:
       const { index, word } = action.payload;
@@ -47,17 +62,23 @@ const gameReducer = (state = initialState, action) => {
       };
 
     case SET_SCORE:
-      return {
+      let newStateWithScore = {
         ...state,
         score: action.payload.score,
       };
 
+      writeToCache(newStateWithScore);
+
+      return newStateWithScore;
+
     case INCREMENT_SONG_INDEX:
       if (state.currentSongIndex < state.songList.length - 1) {
-        return {
+        let newState = {
           ...state,
           currentSongIndex: state.currentSongIndex + 1,
         };
+        writeToCache(newState);
+        return newState;
       }
       return {
         ...state,
@@ -65,10 +86,13 @@ const gameReducer = (state = initialState, action) => {
 
     case DECREMENT_SONG_INDEX:
       if (state.currentSongIndex > 0) {
-        return {
+        let newState = {
           ...state,
           currentSongIndex: state.currentSongIndex - 1,
         };
+        writeToCache(newState);
+
+        return newState;
       }
       return {
         ...state,
@@ -78,6 +102,11 @@ const gameReducer = (state = initialState, action) => {
       state.songList[state.currentSongIndex].revealArtist = true;
       return {
         ...state,
+      };
+
+    case LOAD_OLD_GAME:
+      return {
+        ...action.payload,
       };
 
     default:

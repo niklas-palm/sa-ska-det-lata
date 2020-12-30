@@ -13,6 +13,7 @@ import {
   incrementSongIndex,
   decrementSongIndex,
   revealArtist,
+  finishGame,
 } from "../redux/actions";
 
 import "../styling/app.scss";
@@ -22,7 +23,6 @@ const Game = () => {
   const history = useHistory();
   const game = useSelector((state) => state.gameReducer);
   const [showModal, setShowModal] = useState(false);
-  // const [revealArtist, setRevealArtist] = useState(false);
 
   useEffect(() => {
     if (!activeGame()) {
@@ -57,9 +57,22 @@ const Game = () => {
     );
   };
 
+  const finishGameClick = () => {
+    dispatch(finishGame());
+    history.push("/");
+  };
+
   const renderNextOrFinshedButton = () => {
     if (game.currentSongIndex === game.songList.length - 1) {
-      return <p>FINISHED!</p>;
+      return (
+        <Button
+          onClick={() => finishGameClick(true)}
+          variant="contained"
+          color="secondary"
+        >
+          Return to menu
+        </Button>
+      );
     } else {
       return (
         <div className="GameFooter">

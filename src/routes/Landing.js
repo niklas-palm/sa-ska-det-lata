@@ -1,12 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 import Header from "../components/Header";
+
+import { getCache } from "../utils/utils";
+
+import { loadOldGame } from "../redux/actions";
 
 import "../styling/landing.scss";
 
 const Landing = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
+  const currentGame = useSelector((state) => state.gameReducer);
+
+  useEffect(() => {
+    let res = getCache();
+    if (res) {
+      dispatch(loadOldGame(res));
+    }
+  }, []);
 
   const navigateTo = (path) => {
     history.push(path);
@@ -16,6 +30,25 @@ const Landing = () => {
     <div className="LandingContainer">
       <Header />
       <div className="LandingContent">
+        {currentGame.gameName ? (
+          <div
+            onClick={() => navigateTo("/Game")}
+            className="LandingButton"
+            style={{ backgroundColor: "powderblue" }}
+          >
+            {`Continue ${currentGame.gameName} game`}
+          </div>
+        ) : null}
+        {currentGame.gameName ? (
+          <div
+            style={{
+              borderBottom: "solid 1px green",
+              width: "70%",
+              margin: "0.5em 0",
+            }}
+          ></div>
+        ) : null}
+
         <div
           onClick={() => navigateTo("/CreateGame")}
           className="LandingButton"
@@ -23,7 +56,7 @@ const Landing = () => {
           Create new game
         </div>
         <div onClick={() => navigateTo("/MyGames")} className="LandingButton">
-          Play a game
+          Start new game
         </div>
         <div
           onClick={() => navigateTo("/Instructions")}
@@ -31,9 +64,6 @@ const Landing = () => {
         >
           How to play?
         </div>
-        {/* <Link to="/CreateGame">Create Game</Link>
-        <Link to="/MyGames">MyGames</Link>
-        <Link to="/Instructions">How to play</Link> */}
       </div>
     </div>
   );
